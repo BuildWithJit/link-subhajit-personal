@@ -1,0 +1,128 @@
+{
+    "profile": {
+        "name": "Subhajit Bhar",
+        "nickname": "Jit",
+        "bio": "Data Scientist, AI Engineer, and Tech Enthusiast",
+        "greeting": "Hey! I am Subhajit (Jit) 👋",
+        "subtext": "You probably came here from one of these platforms"
+    },
+    "links": [
+        {
+            "id": "website",
+            "title": "Visit SubhajitBhar.com",
+            "description": "Personal website and portfolio",
+            "url": "https://subhajitbhar.com",
+            "icon": "🌐",
+            "category": "featured",
+            "color": "#2563eb",
+            "featured": true
+        },
+        {
+            "id": "coffee",
+            "title": "Buy Me a Coffee",
+            "description": "Support my work",
+            "url": "https://buymeacoffee.com/29jit",
+            "icon": "☕",
+            "category": "featured",
+            "color": "#ffd700",
+            "featured": true
+        },
+        {
+            "id": "blog",
+            "title": "Read My Blog",
+            "description": "Latest thoughts and tutorials",
+            "url": "https://blog.subhajitbhar.com",
+            "icon": "📝",
+            "category": "content",
+            "featured": false
+        },
+        {
+            "id": "upwork",
+            "title": "Hire on Upwork",
+            "description": "Freelance services",
+            "url": "https://www.upwork.com/freelancers/sbhar",
+            "icon": "💻",
+            "category": "professional",
+            "featured": false
+        },
+        {
+            "id": "linkedin",
+            "title": "Connect on LinkedIn",
+            "description": "Professional network",
+            "url": "https://www.linkedin.com/in/subhajit-bhar/",
+            "icon": "💼",
+            "category": "professional",
+            "featured": false
+        },
+        {
+            "id": "github",
+            "title": "Follow on GitHub",
+            "description": "Open source projects",
+            "url": "https://github.com/buildwithjit",
+            "icon": "⚡",
+            "category": "social",
+            "featured": false
+        },
+        {
+            "id": "twitter",
+            "title": "Follow on X",
+            "description": "Tech updates & insights",
+            "url": "https://x.com/buildwithjit",
+            "icon": "𝕏",
+            "category": "social",
+            "featured": false
+        }
+    ],
+    "categories": {
+        "featured": {
+            "title": "",
+            "description": "Primary links",
+            "order": 1
+        },
+        "content": {
+            "title": "CONTENT",
+            "description": "Blog and content",
+            "order": 2
+        },
+        "professional": {
+            "title": "PROFESSIONAL",
+            "description": "Work and professional profiles",
+            "order": 3
+        },
+        "social": {
+            "title": "SOCIAL",
+            "description": "Social media and community",
+            "order": 4
+        }
+    },
+    "theme": {
+        "background": "#000000",
+        "cardBackground": "#1a1a1a",
+        "textPrimary": "#ffffff",
+        "textSecondary": "#888888",
+        "borderColor": "#333333",
+        "yellowColor": "#ffd700",
+        "greenColor": "#00c851"
+    },
+    "colorOptions": {
+        "website": {
+            "current": "#2563eb",
+            "alternatives": {
+                "blue": "#2563eb",
+                "darkGreen": "#059669",
+                "teal": "#0891b2",
+                "indigo": "#4f46e5",
+                "purple": "#7c3aed",
+                "emerald": "#10b981"
+            },
+            "note": "Blue provides excellent contrast with white text and looks professional"
+        }
+    },
+    "iconOptions": {
+        "twitter": {
+            "current": "𝕏",
+            "alternatives": ["🐦", "❌", "✖️", "\uEA00"],
+            "note": "U+EA00 requires icon font like Font Awesome to display properly"
+        }
+    }
+}

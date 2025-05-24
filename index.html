@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subhajit Bhar - Links</title>
+    <meta name="description" content="All links to Subhajit Bhar's professional profiles and projects">
+    <meta name="author" content="Subhajit Bhar">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Subhajit Bhar - Links">
+    <meta property="og:description" content="All links to Subhajit Bhar's professional profiles and projects">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://links.subhajitbhar.com">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Subhajit Bhar - Links">
+    <meta name="twitter:description" content="All links to Subhajit Bhar's professional profiles and projects">
+
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="profile-section">
+            <h1 class="greeting" id="greeting">Hey! I am Subhajit (Jit) 👋</h1>
+            <p class="subtext" id="subtext">You probably came here from one of these platforms</p>
+        </header>
+
+        <main class="links-section" id="links-container">
+            <!-- Links will be dynamically loaded here -->
+            <div class="loading">Loading links...</div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; <span id="current-year"></span> Subhajit Bhar. Built with ❤️</p>
+        </footer>
+    </div>
+
+    <script>
+        // Set current year in footer
+        function setCurrentYear() {
+            const currentYear = new Date().getFullYear();
+            document.getElementById('current-year').textContent = currentYear;
+        }
+
+        // Load links from JSON
+        async function loadLinks() {
+            try {
+                const response = await fetch('links.json');
+                const data = await response.json();
+
+                // Update profile info
+                document.getElementById('greeting').textContent = data.profile.greeting;
+                document.getElementById('subtext').textContent = data.profile.subtext;
+                document.title = `${data.profile.name} - Links`;
+
+                // Render links
+                renderLinks(data);
+            } catch (error) {
+                console.error('Error loading links:', error);
+                document.getElementById('links-container').innerHTML =
+                    '<div class="error">Failed to load links. Please try again later.</div>';
+            }
+        }
+
+        function renderLinks(data) {
+            const container = document.getElementById('links-container');
+            container.innerHTML = '';
+
+            // Group links by category
+            const linksByCategory = {};
+            data.links.forEach(link => {
+                if (!linksByCategory[link.category]) {
+                    linksByCategory[link.category] = [];
+                }
+                linksByCategory[link.category].push(link);
+            });
+
+            // Sort categories by order
+            const sortedCategories = Object.keys(linksByCategory).sort((a, b) => {
+                return (data.categories[a]?.order || 999) - (data.categories[b]?.order || 999);
+            });
+
+            // Render each category
+            sortedCategories.forEach(categoryKey => {
+                const category = data.categories[categoryKey];
+                const links = linksByCategory[categoryKey];
+
+                // Create category section
+                const categorySection = document.createElement('div');
+                categorySection.className = 'category-section';
+
+                // Add category title if not empty
+                if (category.title) {
+                    const categoryTitle = document.createElement('h2');
+                    categoryTitle.className = 'category-title';
+                    categoryTitle.textContent = category.title;
+                    categorySection.appendChild(categoryTitle);
+                }
+
+                // Add links
+                links.forEach(link => {
+                    const linkCard = createLinkCard(link);
+                    categorySection.appendChild(linkCard);
+                });
+
+                container.appendChild(categorySection);
+            });
+
+            // Add scroll animations
+            addScrollAnimations();
+        }
+
+        function createLinkCard(link) {
+            const card = document.createElement('div');
+            card.className = `link-card ${link.featured ? 'featured' : ''}`;
+
+            // Apply custom color if specified
+            if (link.color) {
+                applyCustomColor(card, link.color);
+            }
+
+            const anchor = document.createElement('a');
+            anchor.href = link.url;
+            anchor.target = '_blank';
+            anchor.rel = 'noopener noreferrer';
+
+            anchor.innerHTML = `
+                <div class="link-icon">${link.icon}</div>
+                <div class="link-content">
+                    <h3>${link.title}</h3>
+                    <p>${link.description}</p>
+                </div>
+            `;
+
+            // Add click tracking
+            anchor.addEventListener('click', () => {
+                console.log('Link clicked:', link.title, link.url);
+                // Add analytics tracking here if needed
+            });
+
+            card.appendChild(anchor);
+            return card;
+        }
+
+        function applyCustomColor(card, hexColor) {
+            // Set background color
+            card.style.backgroundColor = hexColor;
+            card.style.borderColor = hexColor;
+
+            // Calculate text color based on background brightness
+            const textColor = getContrastColor(hexColor);
+            card.style.color = textColor;
+
+            // Apply text color to all text elements
+            card.style.setProperty('--link-text-color', textColor);
+
+            // Set hover color (slightly darker)
+            const hoverColor = adjustBrightness(hexColor, -0.1);
+            card.style.setProperty('--link-hover-color', hoverColor);
+
+            // Add custom styles for this card
+            card.classList.add('custom-color');
+        }
+
+        function getContrastColor(hexColor) {
+            // Remove # if present
+            const hex = hexColor.replace('#', '');
+
+            // Convert to RGB
+            const r = parseInt(hex.substr(0, 2), 16);
+            const g = parseInt(hex.substr(2, 2), 16);
+            const b = parseInt(hex.substr(4, 2), 16);
+
+            // Calculate relative luminance
+            const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+            // Return black or white based on luminance
+            return luminance > 0.5 ? '#000000' : '#ffffff';
+        }
+
+        function adjustBrightness(hexColor, factor) {
+            const hex = hexColor.replace('#', '');
+            const r = Math.max(0, Math.min(255, parseInt(hex.substr(0, 2), 16) + (factor * 255)));
+            const g = Math.max(0, Math.min(255, parseInt(hex.substr(2, 2), 16) + (factor * 255)));
+            const b = Math.max(0, Math.min(255, parseInt(hex.substr(4, 2), 16) + (factor * 255)));
+
+            return `#${Math.round(r).toString(16).padStart(2, '0')}${Math.round(g).toString(16).padStart(2, '0')}${Math.round(b).toString(16).padStart(2, '0')}`;
+        }
+
+        function addScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.link-card').forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+        }
+
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            setCurrentYear();
+            loadLinks();
+        });
+    </script>
+</body>
+</html>
